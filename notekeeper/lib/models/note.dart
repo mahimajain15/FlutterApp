@@ -9,7 +9,7 @@ class Note{
   int _priority;
 
   Note(this._title, this._date, this._priority, [this._description]);
-  Note.withId(this._title, this._date, this._priority, [this._description]);
+  Note.withId(this._id, this._title, this._date, this._priority, [this._description]);
 
   int get id => _id;
   String get title => _title;
@@ -35,7 +35,7 @@ class Note{
     }
   }
 
-  set data(String newDate){
+  set date(String newDate){
     this._date = newDate;
   }
 
@@ -49,6 +49,8 @@ class Note{
     map['description'] = _description;
     map['priority'] = _priority;
     map['date'] = _date;
+
+    return map;
   }
 
   //extract a note object from a map object

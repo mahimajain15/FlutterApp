@@ -6,12 +6,11 @@ import 'package:notekeeper/utils/database_helper.dart';
 import 'package:sqflite/sqflite.dart';
 
 class NoteList extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
 
-@override
-State<StatefulWidget> createState() {
-
-  return NoteListState();
-}
+    return NoteListState();
+  }
 }
 
 class NoteListState extends State<NoteList> {
@@ -159,5 +158,4 @@ class NoteListState extends State<NoteList> {
       });
     });
   }
-}
 }
