@@ -5,9 +5,9 @@ class Person{
   String cid;
   String uid;
   String password;
-  int Address;
+  int add;
 
-  Person({this.pid, this.name, this.cid, this.uid, this.password, this.Address});
+  Person({this.pid, this.name, this.cid, this.uid, this.password, this.add});
 
   Person.fromMap(dynamic map){
     this.pid = map['colPId'];
@@ -15,7 +15,8 @@ class Person{
     this.cid = map['colCId'];
     this.uid = map['colUId'];
     this.password = map['colPwd'];
-    this.Address = map['FK_Person_Address'];
+    // this.address = map['colAdd'];
+    this.add = map['FK_Person_Address'];
   }
 
   Map<String, dynamic> toMap(){
@@ -24,10 +25,11 @@ class Person{
       'colCId': cid,
       'colUId': uid,
       'colPwd': password,
-      'FK_Person_Address': Address
+      'FK_Person_Address': add
     };
 
-
+    if(pid != null)
+      map['colPId'] = pid;
     return map;
   }
 }

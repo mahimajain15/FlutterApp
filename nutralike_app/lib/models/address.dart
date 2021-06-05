@@ -38,8 +38,8 @@ class Address{
       'colCnt': cnt
     };
 
-    // if(aid != null)
-    //   map['colAId'] = aid;
+    if(aid != null)
+      map['colAId'] = aid;
     return map;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nutralike_app/models/address.dart';
-import 'package:nutralike_app/utils/address_operation.dart';
+import 'package:nutralike_app/utils/database_helper.dart';
 
 const darkBlueColor = Color(0xff486579);
 
@@ -12,11 +12,11 @@ class secondscreen extends StatefulWidget{
 }
 
 class _secondscreenState extends State<secondscreen>{
-  int _counter = 0;
+  // int _counter = 0;
   final _formKey = GlobalKey<FormState>();
   Address _address = Address();
   List<Address> _addresses = [];
-  AddressOperations addressOperations =AddressOperations();
+  DatabaseRepository dbProvider;
   final _ctrlSt1 = TextEditingController();
   final _ctrlSt2 = TextEditingController();
   final _ctrlCity = TextEditingController();
@@ -24,11 +24,19 @@ class _secondscreenState extends State<secondscreen>{
   final _ctrlZip = TextEditingController();
   final _ctrlCnt = TextEditingController();
 
-  void _incrementCounter(){
+  void initState(){
+    super.initState();
     setState(() {
-      _counter++;
+      dbProvider = DatabaseRepository.instance;
     });
+    _refreshAddressList();
   }
+
+  // void _incrementCounter(){
+  //   setState(() {
+  //     _counter++;
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,26 +138,26 @@ class _secondscreenState extends State<secondscreen>{
 
 
 
+  _refreshAddressList() async{
+    List<Address> x = await dbProvider.fetchAddresses();
+    setState(() {
+      _addresses = x;
+    });
+  }
+
   _onSubmit() async{
     var form = _formKey.currentState;
 
     if (form.validate()) {
       form.save();
-      // print(_person.name);
+      // print(_address.name);
       if (_address.aid == null)
-        await addressOperations.insertAddress(_address);
+        await dbProvider.insertAddress(_address);
       else
-        await addressOperations.updateAddress(_address);
+        await dbProvider.updateAddress(_address);
       _refreshAddressList();
       _resetForm();
     }
-  }
-
-  _refreshAddressList() async{
-    List<Address> x = await addressOperations.fetchAddresses();
-    setState(() {
-      _addresses = x;
-    });
   }
 
   _resetForm(){
@@ -175,13 +183,14 @@ class _secondscreenState extends State<secondscreen>{
           return Column(
             children: <Widget>[
               ListTile(
-                title: Text(_addresses[index].city.toUpperCase(),
+                title: Text(_addresses[index].stL1.toUpperCase(),
                   style: TextStyle(color: darkBlueColor, fontWeight: FontWeight.bold),
                 ),
+                subtitle: Text(_addresses[index].stL2.toUpperCase()),
                 trailing: IconButton(
                     icon: Icon(Icons.delete_sweep, color: darkBlueColor),
                     onPressed: ()async{
-                      await addressOperations.deleteAddress(_addresses[index]);
+                      await dbProvider.deleteAddress(_addresses[index]);
                       _resetForm();
                       _refreshAddressList();
                     }),
